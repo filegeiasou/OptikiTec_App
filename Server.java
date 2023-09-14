@@ -53,7 +53,8 @@ public class Server extends JFrame {
         this.getContentPane().setBackground(Color.BLACK);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(700, 500);
+        this.setSize(700, 480);
+        this.setResizable(false);
         this.setVisible(true);
 
         // startServer();
@@ -70,7 +71,7 @@ public class Server extends JFrame {
             isServerRunning = true;
             startServerButton.setEnabled(false);
             stopServerButton.setEnabled(true);
-            logMessage("Server started");
+            logMessage("[SERVER STATUS] Server started");
 
             try
             {
@@ -78,12 +79,15 @@ public class Server extends JFrame {
 
                 Thread serverThread = new Thread(() -> {
                     while (!serverSocket.isClosed()) {
-                        try {
+                        try
+                        {
                             Socket clientSocket = serverSocket.accept();
                             ServerThread thread = new ServerThread(clientSocket, this);
                             thread.start();
-                        } catch (IOException e) {
-                            // Handle the exception gracefully (e.g., log it)
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -107,13 +111,16 @@ public class Server extends JFrame {
             stopServerButton.setEnabled(false);
             startServerButton.setEnabled(true);
 
-            try {
+            try
+            {
                 if(serverSocket != null && !serverSocket.isClosed())
                 {
                     serverSocket.close();
-                    logMessage("Server stopped");
+                    logMessage("[SERVER STATUS] Server stopped");
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
